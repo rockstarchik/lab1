@@ -1,4 +1,4 @@
-#include <stdio.h>
+﻿#include <stdio.h>
 #include "lab1.h"
 #include "math.h"
 
@@ -42,10 +42,16 @@ void print(const int* mass, const size_t size, const unsigned column) {
 		for (unsigned s = 1; s < column; s++) {
 			if (mass[i] > 0) {
 				printf("+%d ", mass[i]);
+				if (i == size-1) {
+					break;
+				}
 				i++;
 			}
 			else {
 				printf("%d ", mass[i]);
+				if (i == size-1) {
+					break;
+				}
 				i++;
 			}
 		}
@@ -77,21 +83,29 @@ void print_moda(const int* mass, const size_t size) {
 	}
 	select(mass, size,0);
 	int k = 1;
+	int s = 1;
 	int maxi = 0;
 	int z = 0;
-	for (size_t = 0; i < size-1; i++) {
+	for (size_t i = 0; i < size-1; i++) {
 		if (mass[i] == mass[i + 1]) {
 			k++;
 			if (maxi < k) {
 				maxi = k;
-				z = mass[i];
 			}
 		}
 		else {
 			k = 1;
 		}
 	}
-	printf("mod = %d \n", z);
+	for (size_t i = 0; i < size - 1; i++) {
+		if (mass[i] == mass[i + 1]) {
+			s++;
+		}
+		if (mass[i] != mass[i + 1] && s == maxi) {
+			printf("mod = %d \n", mass[i]);
+			s = 1;
+		}
+	}
 }
 
 float get_average(const int* mass, const size_t size) {
@@ -177,6 +191,15 @@ void print_hist(const int* mass, const size_t size, const int* count, const size
 
 	float width = (float)(maxi - mini) / bins;
 
+	for (size_t i = 0; i < bins; i++) {
+		float lower = mini + i * width;
+		float upper = lower + width;
+		printf("[%.2f, %.2f]: ", lower, upper);
 
+		for (int j = 0; j < count[i]; j++) {
+			printf("■");
+		}
+		printf("\n");
+	}
 }
 
